@@ -29,6 +29,7 @@ All notable changes to this project will be documented in this file.
 - Histogram now rendering properly when using logarithmic Y axis (#740) 
 - Fix ExampleLibrary build errors in certain code pages (#1890)
 - Fix for double.Epsilon zero check that fails on some architectures (#1924)
+- DataPointSeries.GetItem uses cached items source points if available.
 
 ## [2.1.0] - 2021-10-02
 
