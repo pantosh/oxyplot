@@ -292,11 +292,12 @@ namespace OxyPlot.Series
         /// </summary>
         /// <param name="points">The points (data coordinates).</param>
         /// <param name="point">The point (screen coordinates).</param>
+        /// <param name="maxScreenDistance">Maximum distance to find nearest point in screen coordinates.</param>
         /// <returns>A <see cref="TrackerHitResult" /> if a point was found, <c>null</c> otherwise.</returns>
         /// <remarks>The Text property of the result will not be set, since the formatting depends on the various series.</remarks>
-        protected TrackerHitResult GetNearestPointInternal(IEnumerable<DataPoint> points, ScreenPoint point)
+        protected TrackerHitResult GetNearestPointInternal(IEnumerable<DataPoint> points, ScreenPoint point, double maxScreenDistance = double.PositiveInfinity)
         {
-            return this.GetNearestPointInternal(points, 0, point);
+            return this.GetNearestPointInternal(points, 0, point, maxScreenDistance);
         }
 
         /// <summary>
@@ -305,15 +306,21 @@ namespace OxyPlot.Series
         /// <param name="points">The points (data coordinates).</param>
         /// <param name="startIdx">The index to start from.</param>
         /// <param name="point">The point (screen coordinates).</param>
+        /// <param name="maxScreenDistance">Maximum distance to find nearest point in screen coordinates.</param>
         /// <returns>A <see cref="TrackerHitResult" /> if a point was found, <c>null</c> otherwise.</returns>
         /// <remarks>The Text property of the result will not be set, since the formatting depends on the various series.</remarks>
-        protected TrackerHitResult GetNearestPointInternal(IEnumerable<DataPoint> points, int startIdx, ScreenPoint point)
+        protected TrackerHitResult GetNearestPointInternal(IEnumerable<DataPoint> points, int startIdx, ScreenPoint point, double maxScreenDistance = double.PositiveInfinity)
         {
             var spn = default(ScreenPoint);
             var dpn = default(DataPoint);
             double index = -1;
 
-            double minimumDistance = double.MaxValue;
+            //if (this.IsXMonotonic && points is IList<DataPoint> dataPointList && maxScreenDistance < double.PositiveInfinity)
+            //{
+            //    startIdx = this.FindMonotonicXStartIndex(dataPointList, dataPointList.Count/2, 0, dataPointList.Count, point.X - maxScreenDistance);
+            //}
+
+            double minimumDistanceSqr = maxScreenDistance*maxScreenDistance;
             int i = 0;
             foreach (var p in points.Skip(startIdx))
             {
@@ -324,20 +331,23 @@ namespace OxyPlot.Series
                 }
 
                 var sp = this.Transform(p.x, p.y);
+
+                if (this.IsXMonotonic && sp.X > maxScreenDistance) break;
+
                 double d2 = (sp - point).LengthSquared;
 
-                if (d2 < minimumDistance)
+                if (d2 < minimumDistanceSqr)
                 {
                     dpn = p;
                     spn = sp;
-                    minimumDistance = d2;
+                    minimumDistanceSqr = d2;
                     index = i;
                 }
 
                 i++;
             }
 
-            if (minimumDistance < double.MaxValue)
+            if (minimumDistanceSqr < double.MaxValue)
             {
                 var item = this.GetItem((int)Math.Round(index));
                 return new TrackerHitResult
@@ -351,6 +361,18 @@ namespace OxyPlot.Series
             }
 
             return null;
+        }
+
+        private int FindMonotonicXStartIndex(IList<DataPoint> dataPoints, int index, int lowerIndex, int upperIndex, double minX)
+        {
+            if (lowerIndex == upperIndex) return index;
+            var p = dataPoints[index];
+            var sp = this.Transform(p.x, p.y);
+            if (sp.X > minX)
+                return this.FindMonotonicXStartIndex(dataPoints, lowerIndex+(index-lowerIndex)/2, lowerIndex, index, minX);
+            if (sp.X < minX)
+                return this.FindMonotonicXStartIndex(dataPoints, index + (lowerIndex-index)/2, index, upperIndex, minX);
+            return index;
         }
 
         /// <summary>

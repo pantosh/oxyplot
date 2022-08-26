@@ -99,7 +99,7 @@ namespace OxyPlot.Series
         protected internal IList<OxyRect> ActualBarRectangles { get; set; }
 
         /// <inheritdoc/>
-        public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
+        public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate, double maxScreenDistance = double.PositiveInfinity)
         {
             for (var i = 0; i < this.ActualBarRectangles.Count; i++)
             {

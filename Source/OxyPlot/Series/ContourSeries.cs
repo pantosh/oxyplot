@@ -232,8 +232,9 @@ namespace OxyPlot.Series
         /// </summary>
         /// <param name="point">The point.</param>
         /// <param name="interpolate">The interpolate.</param>
+        /// <param name="maxScreenDistance">Maximum distance to find nearest point in screen coordinates.</param>
         /// <returns>A hit result object.</returns>
-        public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate)
+        public override TrackerHitResult GetNearestPoint(ScreenPoint point, bool interpolate, double maxScreenDistance = double.PositiveInfinity)
         {
             TrackerHitResult result = null;
 

@@ -35,7 +35,7 @@ namespace OxyPlot.Utilities
             // Check data points only
             if (snap || pointsOnly)
             {
-                var result = series.GetNearestPoint(point, false);
+                var result = series.GetNearestPoint(point, false, firesDistance);
                 if (ShouldTrackerOpen(result, point, firesDistance))
                 {
                     return result;
@@ -45,7 +45,7 @@ namespace OxyPlot.Utilities
             // Check between data points (if possible)
             if (!pointsOnly)
             {
-                var result = series.GetNearestPoint(point, true);
+                var result = series.GetNearestPoint(point, true, firesDistance);
                 if (!checkDistanceBetweenPoints || ShouldTrackerOpen(result, point, firesDistance))
                 {
                     return result;
