@@ -1135,19 +1135,13 @@ namespace OxyPlot.Axes
         /// <returns>The transformed value (screen coordinate).</returns>
         public virtual double Transform(double x)
         {
-#if DEBUG
-            // check if the screen coordinate is very big, this could cause issues
-            // only do this in DEBUG builds, as it affects performance
             var s = (x - this.offset) * this.scale;
-            if (s * s > 1e12)
-            {
-                throw new InvalidOperationException($"Invalid transform (screen coordinate={s}). This could cause issues with the presentation framework.");
-            }
-
-            return s;
-#else
-            return (x - this.offset) * this.scale;
+#if DEBUG
+            // clamp very large screen coordinates
+            // May produce artifacts, but seems nicer than throwing
+            s = Math.Max(-100000, Math.Min(s, 100000));
 #endif
+            return s;
         }
 
         /// <summary>
