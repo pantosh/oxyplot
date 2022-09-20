@@ -164,7 +164,7 @@ namespace OxyPlot.Wpf
             var streamGeometry = new StreamGeometry();
             using (var streamGeometryContext = streamGeometry.Open())
             {
-                streamGeometryContext.BeginFigure(firstPoint, false, false);
+                streamGeometryContext.BeginFigure(firstPoint, true, false);
                 streamGeometryContext.PolyLineTo(otherPoints, !stroke.IsUndefined(), false);
             }
 
