@@ -17,6 +17,7 @@
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <LangVersion>8</LangVersion>
         <NoWarn>618</NoWarn>
+        <Version>2.1.0.1</Version>
     </PropertyGroup>
     <ItemGroup>
         <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />

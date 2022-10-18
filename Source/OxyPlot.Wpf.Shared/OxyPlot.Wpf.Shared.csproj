@@ -15,6 +15,7 @@
     <RepositoryUrl>https://github.com/oxyplot/oxyplot.git</RepositoryUrl>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>OxyPlot.Wpf.Shared.snk</AssemblyOriginatorKeyFile>
+    <Version>2.1.0.1</Version>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />
