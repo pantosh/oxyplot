@@ -18,6 +18,7 @@
     <PackageTags>plotting plot charting chart</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/oxyplot/oxyplot.git</RepositoryUrl>
+    <Version>2.1.0.1</Version>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\..\Icons\OxyPlot_128.png" Pack="true" PackagePath="\" />
